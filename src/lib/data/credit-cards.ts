@@ -1,0 +1,318 @@
+import type { CreditCard, CreditCardCategoryPage } from "@/lib/types/credit-card";
+
+function hoursAgo(n: number) {
+  return new Date(Date.now() - n * 60 * 60_000).toISOString();
+}
+function daysAgo(n: number) {
+  return new Date(Date.now() - n * 24 * 60 * 60_000).toISOString();
+}
+
+/**
+ * Only HDFC Millennia ships with fully-authored real content in the source
+ * design doc. The remaining cards are illustrative placeholder content
+ * (plausible, publicly-typical fee/benefit ranges) — one representative
+ * card per category, per the confirmed seed-content decision — so every
+ * category page and the listing grid render complete-looking pages.
+ */
+export const creditCards: CreditCard[] = [
+  {
+    slug: "hdfc-millennia",
+    bankName: "HDFC Bank",
+    cardName: "Millennia Credit Card",
+    artFrom: "#F2790A",
+    artTo: "#16213E",
+    categories: ["Cashback", "Shopping"],
+    annualFee: "₹1,000 + GST",
+    renewalFee: "₹1,000 + GST",
+    joiningFeeWaiver: "Spend ₹1L/yr",
+    maxCashback: "5%",
+    eligibility: "Age 21–60 · Min. income ₹35,000/mo (salaried) or ITR ₹6L/yr (self-employed)",
+    requiredDocuments: "PAN, Aadhaar, latest 3 payslips or ITR, address proof",
+    highlights: [
+      "5% cashback on Amazon, Flipkart, Myntra, Swiggy, Tata CLiQ",
+      "1% cashback on all other online spends",
+      "1% fuel surcharge waiver at HPCL outlets",
+      "Redeemable Cashpoints — 1 point = ₹1",
+    ],
+    latestUpdate: { text: "Fuel surcharge waiver at HPCL outlets confirmed still active this billing cycle — no change to the 1% cap.", postedAt: hoursAgo(3) },
+    likeCount: 812,
+    commentCount: 34,
+    applyUrl: "https://www.hdfcbank.com",
+    featured: true,
+  },
+  {
+    slug: "sbi-cashback",
+    bankName: "SBI Card",
+    cardName: "Cashback Credit Card",
+    artFrom: "#17B8C4",
+    artTo: "#0E7A83",
+    categories: ["Cashback"],
+    annualFee: "₹999 + GST",
+    renewalFee: "₹999 + GST",
+    joiningFeeWaiver: "Spend ₹2L/yr",
+    maxCashback: "5%",
+    eligibility: "Age 21–70 · Min. income ₹20,000/mo (salaried) or ITR ₹3L/yr (self-employed)",
+    requiredDocuments: "PAN, Aadhaar, latest 2 payslips or ITR, address proof",
+    highlights: [
+      "5% cashback on all online spends, no merchant restriction",
+      "1% cashback on offline spends",
+      "Cashback auto-credited to statement, no redemption steps",
+      "Zero joining fee in the first year",
+    ],
+    latestUpdate: { text: "Cashback cap per statement cycle holds steady at ₹5,000 this month.", postedAt: daysAgo(1) },
+    likeCount: 340,
+    commentCount: 21,
+    applyUrl: "https://www.sbicard.com",
+  },
+  {
+    slug: "axis-atlas",
+    bankName: "Axis Bank",
+    cardName: "Atlas Credit Card",
+    artFrom: "#D6146B",
+    artTo: "#16213E",
+    categories: ["Travel", "Airport Lounge"],
+    annualFee: "₹5,000 + GST",
+    renewalFee: "₹5,000 + GST",
+    eligibility: "Salaried or self-employed · Min. income ₹12L/yr",
+    requiredDocuments: "PAN, Aadhaar, income proof, address proof",
+    highlights: [
+      "Up to 5 EDGE Miles per ₹100 on travel bookings",
+      "Complimentary domestic & international lounge access",
+      "Milestone benefits at ₹3L and ₹7.5L annual spend",
+      "EDGE Miles transferable to 20+ airline & hotel partners",
+    ],
+    latestUpdate: { text: "Lounge access count for this tier confirmed unchanged at 8 domestic visits/year.", postedAt: daysAgo(2) },
+    likeCount: 289,
+    commentCount: 17,
+    applyUrl: "https://www.axisbank.com",
+  },
+  {
+    slug: "icici-amazon-pay",
+    bankName: "ICICI Bank",
+    cardName: "Amazon Pay Credit Card",
+    artFrom: "#131921",
+    artTo: "#FF9900",
+    categories: ["Shopping", "Cashback"],
+    annualFee: "Lifetime Free",
+    renewalFee: "Lifetime Free",
+    maxCashback: "5%",
+    eligibility: "Amazon account + Age 21–65 · Min. income ₹15,000/mo",
+    requiredDocuments: "PAN, Aadhaar, address proof",
+    highlights: [
+      "5% back on Amazon for Prime members, 3% for non-Prime",
+      "2% back at 100+ partner merchants",
+      "1% back on all other spends",
+      "Rewards credited directly as Amazon Pay balance",
+    ],
+    likeCount: 512,
+    commentCount: 29,
+    applyUrl: "https://www.icicibank.com",
+  },
+  {
+    slug: "hdfc-regalia-gold",
+    bankName: "HDFC Bank",
+    cardName: "Regalia Gold Credit Card",
+    artFrom: "#37436A",
+    artTo: "#16213E",
+    categories: ["Airport Lounge", "Rewards", "Premium"],
+    annualFee: "₹2,500 + GST",
+    renewalFee: "₹2,500 + GST",
+    joiningFeeWaiver: "Spend ₹4L/yr",
+    eligibility: "Age 21–60 · Min. income ₹1L/mo (salaried) or ITR ₹18L/yr (self-employed)",
+    requiredDocuments: "PAN, Aadhaar, latest 3 payslips or ITR, address proof",
+    highlights: [
+      "4 reward points per ₹150 spent, accelerated on select brands",
+      "Complimentary domestic & international lounge access",
+      "Milestone vouchers from Marriott, Myntra & more",
+      "Airport meet-and-greet service, twice a quarter",
+    ],
+    likeCount: 176,
+    commentCount: 9,
+    applyUrl: "https://www.hdfcbank.com",
+  },
+  {
+    slug: "indianoil-hdfc-bank",
+    bankName: "HDFC Bank",
+    cardName: "IndianOil HDFC Bank Credit Card",
+    artFrom: "#F2790A",
+    artTo: "#1B9C6E",
+    categories: ["Fuel", "Cashback"],
+    annualFee: "₹500 + GST",
+    renewalFee: "₹500 + GST",
+    joiningFeeWaiver: "Spend ₹50,000/yr",
+    eligibility: "Age 21–60 · Min. income ₹15,000/mo",
+    requiredDocuments: "PAN, Aadhaar, latest payslip, address proof",
+    highlights: [
+      "5% value back as fuel points at IndianOil outlets",
+      "1% fuel surcharge waiver on all fuel transactions",
+      "5% value back on grocery & bill payments",
+      "1% value back on all other spends",
+    ],
+    likeCount: 204,
+    commentCount: 14,
+    applyUrl: "https://www.hdfcbank.com",
+  },
+  {
+    slug: "idfc-first-select",
+    bankName: "IDFC FIRST Bank",
+    cardName: "FIRST Select Credit Card",
+    artFrom: "#0E7A83",
+    artTo: "#16213E",
+    categories: ["Lifetime Free", "Rewards"],
+    annualFee: "Lifetime Free",
+    renewalFee: "Lifetime Free",
+    eligibility: "Age 21–65 · Min. income ₹25,000/mo",
+    requiredDocuments: "PAN, Aadhaar, latest 2 payslips, address proof",
+    highlights: [
+      "10x reward points on dining, movies & entertainment",
+      "Interest rates as low as 9% p.a. on revolving credit",
+      "Complimentary domestic lounge access on quarterly spend",
+      "Reward points never expire",
+    ],
+    likeCount: 158,
+    commentCount: 8,
+    applyUrl: "https://www.idfcfirstbank.com",
+  },
+  {
+    slug: "au-bank-lit",
+    bankName: "AU Small Finance Bank",
+    cardName: "LIT Credit Card",
+    artFrom: "#9F2089",
+    artTo: "#16213E",
+    categories: ["RuPay (UPI)", "Lifetime Free"],
+    annualFee: "Lifetime Free",
+    renewalFee: "Lifetime Free",
+    eligibility: "Age 21–60 · Min. income ₹15,000/mo",
+    requiredDocuments: "PAN, Aadhaar, address proof",
+    highlights: [
+      "RuPay variant works on UPI apps for scan-and-pay credit",
+      "Fully customisable reward categories — pick your top 2",
+      "Up to 5% back in your chosen categories",
+      "Instant virtual card issuance on approval",
+    ],
+    likeCount: 121,
+    commentCount: 6,
+    applyUrl: "https://www.aubank.in",
+  },
+  {
+    slug: "scapia-federal-bank",
+    bankName: "Federal Bank",
+    cardName: "Scapia Federal Bank Credit Card",
+    artFrom: "#143C6B",
+    artTo: "#17B8C4",
+    categories: ["Low Forex", "Travel"],
+    annualFee: "Lifetime Free",
+    renewalFee: "Lifetime Free",
+    eligibility: "Age 18+ · Min. income ₹15,000/mo",
+    requiredDocuments: "PAN, Aadhaar, address proof",
+    highlights: [
+      "Zero forex markup on all international transactions",
+      "Up to 10% back redeemable against flight & hotel bookings",
+      "Splits any purchase into no-cost EMIs, flat rate",
+      "No minimum spend or income-slab tiers to unlock benefits",
+    ],
+    likeCount: 233,
+    commentCount: 19,
+    applyUrl: "https://www.federalbank.co.in",
+  },
+  {
+    slug: "amex-platinum-travel",
+    bankName: "American Express",
+    cardName: "Platinum Travel Credit Card",
+    artFrom: "#16213E",
+    artTo: "#C9A227",
+    categories: ["Premium", "Travel", "Rewards"],
+    annualFee: "₹3,500 + GST",
+    renewalFee: "₹3,500 + GST",
+    eligibility: "Age 18–65 · Min. income ₹6L/yr",
+    requiredDocuments: "PAN, Aadhaar, ITR or income proof, address proof",
+    highlights: [
+      "1 Membership Rewards point per ₹50 spent",
+      "Milestone bonus vouchers at ₹1.9L and ₹4L annual spend",
+      "Complimentary golf access at select courses",
+      "24x7 global travel & concierge assistance",
+    ],
+    likeCount: 97,
+    commentCount: 5,
+    applyUrl: "https://www.americanexpress.com",
+  },
+  {
+    slug: "sc-rewards",
+    bankName: "Standard Chartered",
+    cardName: "Rewards Credit Card",
+    artFrom: "#37436A",
+    artTo: "#0E7A83",
+    categories: ["Rewards", "Shopping"],
+    annualFee: "₹250 + GST",
+    renewalFee: "₹250 + GST",
+    joiningFeeWaiver: "Spend ₹60,000/yr",
+    eligibility: "Age 21–60 · Min. income ₹18,000/mo",
+    requiredDocuments: "PAN, Aadhaar, latest 2 payslips, address proof",
+    highlights: [
+      "5x reward points on online spends across all merchants",
+      "2,500 bonus points on the first transaction",
+      "Points redeemable across shopping, travel & dining",
+      "Add-on cards available at no extra annual fee",
+    ],
+    likeCount: 88,
+    commentCount: 4,
+    applyUrl: "https://www.sc.com/in",
+  },
+];
+
+export const creditCardCategoryPages: CreditCardCategoryPage[] = [
+  {
+    slug: "lifetime-free-credit-cards",
+    name: "Lifetime Free",
+    title: "Lifetime Free Credit Cards",
+    description: "Zero annual and renewal fees, for life — no minimum spend to keep it that way.",
+  },
+  {
+    slug: "cashback-credit-cards",
+    name: "Cashback",
+    title: "Cashback Credit Cards",
+    description: "Straight cashback on everyday spends, credited automatically — no points to redeem.",
+  },
+  {
+    slug: "travel-credit-cards",
+    name: "Travel",
+    title: "Travel Credit Cards",
+    description: "Miles, milestone vouchers and travel-first perks for frequent flyers.",
+  },
+  {
+    slug: "airport-lounge-credit-cards",
+    name: "Airport Lounge",
+    title: "Airport Lounge Credit Cards",
+    description: "Complimentary domestic & international lounge access, built into the card.",
+  },
+  {
+    slug: "fuel-credit-cards",
+    name: "Fuel",
+    title: "Fuel Credit Cards",
+    description: "Surcharge waivers and fuel-point rewards at the pump.",
+  },
+  {
+    slug: "low-forex-credit-cards",
+    name: "Low Forex",
+    title: "Low Forex Credit Cards",
+    description: "Little to zero markup on international transactions — built for travel spending.",
+  },
+  {
+    slug: "rupay-credit-cards",
+    name: "RuPay (UPI)",
+    title: "RuPay Credit Cards",
+    description: "RuPay cards that work on UPI — scan-and-pay, on credit.",
+  },
+];
+
+export function getCreditCardBySlug(slug: string): CreditCard | undefined {
+  return creditCards.find((c) => c.slug === slug);
+}
+
+export function getCreditCardsByCategory(name: string): CreditCard[] {
+  return creditCards.filter((c) => c.categories.some((cat) => cat.toLowerCase() === name.toLowerCase()));
+}
+
+export function getCreditCardsByBank(bankName: string): CreditCard[] {
+  return creditCards.filter((c) => c.bankName.toLowerCase() === bankName.toLowerCase());
+}

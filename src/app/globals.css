@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/* next-themes writes data-theme="dark"/"light" on <html>; key the `dark:`
+   variant off that attribute instead of the default prefers-color-scheme media query. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ==========================================================================
+   BUY-O-RAMA design tokens — ported 1:1 from design/buyorama-design-system.html
+   ========================================================================== */
+
+@theme {
+  /* raw brand palette */
+  --color-brand-orange: #f2790a;
+  --color-brand-orange-tint: #ffebd4;
+  --color-brand-yellow: #ffc94a;
+  --color-brand-yellow-tint: #fff4da;
+  --color-brand-pink: #e91e76;
+  --color-brand-pink-deep: #d6146b;
+  --color-brand-pink-tint: #fde1ee;
+  --color-brand-teal: #17b8c4;
+  --color-brand-teal-deep: #0e7a83;
+  --color-brand-teal-tint: #dcf6f6;
+  --color-brand-green: #1b9c6e;
+  --color-brand-green-tint: #def5ea;
+  --color-brand-navy: #16213e;
+  --color-brand-navy-light: #37436a;
+
+  /* semantic surface / text / border tokens — swap under [data-theme="dark"] below */
+  --color-bg-page: #f6f7fb;
+  --color-bg-surface: #ffffff;
+  --color-bg-surface-raised: #ffffff;
+  --color-bg-sunken: #eef0f8;
+  --color-text-primary: #16213e;
+  --color-text-secondary: #454f74;
+  --color-text-muted: #6b7390;
+  --color-border-subtle: #e1e4ef;
+  --color-border-strong: #c7cce0;
+
+  /* radius scale (overrides Tailwind defaults so rounded-sm/md/lg/xl match the doc) */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+
+  /* shadows — swap under [data-theme="dark"] below */
+  --shadow-brand-sm: var(--shadow-brand-sm-value);
+  --shadow-brand-md: var(--shadow-brand-md-value);
+  --shadow-brand-lg: var(--shadow-brand-lg-value);
+  --shadow-glow-pink: 0 10px 24px rgba(214, 20, 107, 0.32);
+  --shadow-glow-teal: 0 10px 24px rgba(23, 184, 196, 0.3);
+
+  /* type */
+  --font-display: var(--font-baloo), ui-rounded, "Segoe UI Rounded", system-ui, sans-serif;
+  --font-body: var(--font-manrope), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono-brand: var(--font-jbmono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* custom breakpoints used only where the doc specifies (grid1: cols collapse, profile: sidebar->drawer) */
+  --breakpoint-grid1: 1000px;
+  --breakpoint-profile: 980px;
+}
+
+:root {
+  --shadow-brand-sm-value: 0 2px 8px rgba(22, 33, 62, 0.08);
+  --shadow-brand-md-value: 0 10px 28px rgba(22, 33, 62, 0.12);
+  --shadow-brand-lg-value: 0 22px 48px rgba(22, 33, 62, 0.16);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg-page: #0e1730;
+  --color-bg-surface: #1a2547;
+  --color-bg-surface-raised: #22305a;
+  --color-bg-sunken: #0b1226;
+  --color-text-primary: #f3f5fc;
+  --color-text-secondary: #c6cce6;
+  --color-text-muted: #8d96be;
+  --color-border-subtle: #2c3a63;
+  --color-border-strong: #3c4c7d;
+  --shadow-brand-sm-value: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --shadow-brand-md-value: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-brand-lg-value: 0 24px 56px rgba(0, 0, 0, 0.55);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-bg-page);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  ::selection {
+    background: var(--color-brand-pink-tint);
+    color: var(--color-brand-navy);
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* the doc's exactly-3 permitted infinite loops — pure CSS, gated by motion-safe in markup */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(3deg);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
