@@ -1,0 +1,850 @@
+/* Brand Feeds & Coupons — scoped to /admin-backoffice/brand-feeds/[brandSlug] */
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.breadcrumbLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #7c3aed;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.breadcrumbLink:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbSep {
+  color: #cbd5e0;
+}
+
+.breadcrumbCurrent {
+  color: #718096;
+  font-weight: 500;
+}
+
+/* Hero panel */
+.heroPanel {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 30px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);
+  box-shadow: 0 20px 45px -20px rgba(124, 58, 237, 0.45);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.18), transparent 55%);
+}
+
+.heroLogo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.heroInitial {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+
+.heroTitle {
+  margin: 0 0 2px 0;
+  font-size: 24px;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+
+.heroSlug {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  position: relative;
+  z-index: 1;
+}
+
+/* Not found state */
+.notFoundWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.notFoundWrap h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #1a202c;
+}
+
+.notFoundWrap p {
+  margin: 0 0 8px 0;
+  color: #718096;
+}
+
+/* Tabs */
+.tabsRow {
+  margin-bottom: 24px;
+}
+
+.tabsRoot {
+  display: inline-flex;
+  gap: 4px;
+  padding: 5px;
+  background: #eef0f8;
+  border-radius: 14px;
+}
+
+.tabButton {
+  position: relative;
+  border: none;
+  background: none;
+  padding: 9px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #718096;
+}
+
+.tabButtonActive {
+  color: #ffffff;
+}
+
+.tabPill {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  box-shadow: 0 6px 16px -6px rgba(124, 58, 237, 0.6);
+  z-index: 0;
+}
+
+.tabLabel {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tabCount {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Panel header (Feeds tab) */
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.panelHeading {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+/* Buttons */
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px -8px rgba(124, 58, 237, 0.55);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -8px rgba(124, 58, 237, 0.65);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  background: #eef0f8;
+  color: #2d3748;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.18s ease;
+}
+
+.btnSecondary:hover:not(:disabled) {
+  background: #e1e4ef;
+}
+
+.btnSecondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnDanger {
+  background: linear-gradient(135deg, #f56565, #e53e3e);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.18s ease;
+}
+
+.btnDanger:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btnDanger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.iconBtn,
+.iconBtnDanger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.iconBtn {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+}
+
+.iconBtn:hover {
+  background: rgba(124, 58, 237, 0.18);
+  transform: translateY(-1px);
+}
+
+.iconBtnDanger {
+  background: rgba(229, 62, 62, 0.1);
+  color: #e53e3e;
+}
+
+.iconBtnDanger:hover {
+  background: rgba(229, 62, 62, 0.18);
+  transform: translateY(-1px);
+}
+
+/* Coupon grid */
+.couponGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.addCouponCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 220px;
+  border: 2px dashed rgba(124, 58, 237, 0.35);
+  border-radius: 18px;
+  background: linear-gradient(160deg, rgba(124, 58, 237, 0.08), rgba(236, 72, 153, 0.06));
+  cursor: pointer;
+  color: #7c3aed;
+}
+
+.addCouponIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: white;
+  box-shadow: 0 10px 24px -8px rgba(124, 58, 237, 0.55);
+}
+
+.addCouponLabel {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.couponSkeleton {
+  min-height: 220px;
+  border-radius: 18px;
+}
+
+.couponCard {
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.couponMedia {
+  position: relative;
+  height: 120px;
+  background: linear-gradient(135deg, #eef0f8, #e6e9f7);
+}
+
+.couponImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.couponMediaFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a3aed6;
+}
+
+.couponCardActions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.couponCard:hover .couponCardActions {
+  opacity: 1;
+}
+
+.couponBody {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.couponTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.couponDescription {
+  margin: 0;
+  font-size: 13px;
+  color: #4a5568;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.couponDate {
+  font-size: 11px;
+  color: #a0aec0;
+  margin-top: auto;
+}
+
+/* Forms */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2d3748;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.formInput,
+.formTextarea {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.formTextarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.formInput:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.formFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.imagePreviewWrap {
+  margin-bottom: 4px;
+}
+
+.imagePreview {
+  max-width: 100%;
+  max-height: 140px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.uploadDropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border: 1.5px dashed #cbd5e0;
+  border-radius: 10px;
+  color: #7c3aed;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+.uploadDropzone:hover {
+  border-color: #7c3aed;
+  background: rgba(124, 58, 237, 0.04);
+}
+
+.uploadInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.fieldError {
+  color: #e53e3e;
+  font-size: 12px;
+}
+
+.confirmMessage {
+  margin: 0;
+  color: #4a5568;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Modal */
+.modalRoot {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modalBackdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.modalPanel {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: 88vh;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px;
+  border-bottom: 1px solid #eef0f8;
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.modalCloseBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: #eef0f8;
+  color: #718096;
+  cursor: pointer;
+}
+
+.modalCloseBtn:hover {
+  background: #e1e4ef;
+}
+
+.modalBody {
+  padding: 22px 24px;
+  overflow-y: auto;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid #eef0f8;
+  background: #f8fafc;
+}
+
+/* Toast */
+.toastRoot {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1100;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.35);
+  min-width: 240px;
+}
+
+.toastSuccess {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+}
+
+.toastError {
+  background: linear-gradient(135deg, #f56565, #e53e3e);
+}
+
+.toastIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  flex: none;
+}
+
+.toastDismiss {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  display: flex;
+}
+
+/* Feeds table */
+.tableWrap {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.tableDesktop {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table th {
+  text-align: left;
+  padding: 12px 16px;
+  background: #f8fafc;
+  color: #718096;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f3fa;
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.thImage {
+  width: 64px;
+}
+
+.thActions {
+  width: 90px;
+}
+
+.thSortBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.sortIconIdle {
+  color: #cbd5e0;
+}
+
+.sortArrowUp {
+  color: #7c3aed;
+  transform: rotate(180deg);
+}
+
+.sortArrowDown {
+  color: #7c3aed;
+}
+
+.tdTitle {
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.tdMuted {
+  color: #718096;
+  white-space: nowrap;
+}
+
+.tdDescription {
+  color: #4a5568;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.tableThumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.tableThumbFallback {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: #eef0f8;
+}
+
+.rowActions {
+  display: flex;
+  gap: 6px;
+}
+
+.tableEmpty {
+  padding: 60px 20px;
+  text-align: center;
+  color: #718096;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+}
+
+.skeletonRows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 12px;
+}
+
+.skeletonRow {
+  display: grid;
+  grid-template-columns: 44px 1fr 80px;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 4px;
+}
+
+.skeletonThumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+}
+
+.skeletonLine {
+  height: 12px;
+  border-radius: 6px;
+}
+
+.skeletonLineShort {
+  height: 12px;
+  width: 60px;
+  border-radius: 6px;
+}
+
+.tableMobile {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feedMobileCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feedMobileHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.feedMobileFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .tableDesktop {
+    display: none;
+  }
+
+  .tableMobile {
+    display: flex;
+  }
+
+  .heroPanel {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .couponGrid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
