@@ -9,15 +9,48 @@ import { FeedPost } from "@/components/brand-profile/feed-post";
 import { SuggestDealButton } from "@/components/brand-profile/suggest-deal-button";
 import { DealCard } from "@/components/deals/deal-card";
 import { timeAgo } from "@/lib/utils";
+import type { BrandCoupon } from "@/lib/content/get-coupons";
 import type { Deal } from "@/lib/types/deal";
 import type { Store } from "@/lib/types/store";
 
-export function StoreFeed({ store, deals }: { store: Store; deals: Deal[] }) {
+/** "Updated Xd Ymin ago" from the latest feed/coupon timestamp vs today. */
+function updatedText(latestIso: string): string {
+  const latest = new Date(latestIso).getTime();
+  const diffSeconds = Math.max(0, Math.floor((Date.now() - latest) / 1000));
+  if (diffSeconds < 60) return "Updated just now";
+  const minutes = Math.floor(diffSeconds / 60);
+  if (minutes < 60) return `Updated ${minutes} min${minutes === 1 ? "" : "s"} ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `Updated ${hours} hr${hours === 1 ? "" : "s"} ago`;
+  const days = Math.floor(hours / 24);
+  const remMinutes = minutes % 60;
+  if (remMinutes === 0) return `Updated ${days} day${days === 1 ? "" : "s"} ago`;
+  return `Updated ${days} day${days === 1 ? "" : "s"} ${remMinutes} min ago`;
+}
+
+export function StoreFeed({ store, deals, brandCoupons }: { store: Store; deals: Deal[]; brandCoupons?: BrandCoupon[] }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState<"newest" | "discount">("newest");
 
-  const categories = useMemo(() => ["All", ...Array.from(new Set(deals.map((d) => d.category)))], [deals]);
+  // Categories but remove "All" and the generic "Deals" fallback chips (Req 7).
+  const categories = useMemo(
+    () =>
+      Array.from(
+        new Set(deals.map((d) => d.category).filter((c) => c && c.trim() !== "" && c !== "All" && c !== "Deals")),
+      ),
+    [deals],
+  );
+
+  // Latest timestamp across feeds and coupons (Req 6).
+  const latestUpdated = useMemo(() => {
+    const times = [
+      ...deals.map((d) => new Date(d.publishedAt).getTime()),
+      ...(brandCoupons ?? []).map((c) => new Date(c.createdAt).getTime()),
+    ].filter((t) => !Number.isNaN(t));
+    if (times.length === 0) return null;
+    return new Date(Math.max(...times)).toISOString();
+  }, [deals, brandCoupons]);
 
   const filtered = useMemo(() => {
     let list = deals;
@@ -72,7 +105,7 @@ export function StoreFeed({ store, deals }: { store: Store; deals: Deal[] }) {
       <div className="flex items-center justify-between px-5 pt-5">
         <h2 className="text-xl">Feeds</h2>
         <div className="flex items-center gap-1.5 text-[11px] font-bold text-text-muted">
-          <PulseDot /> Updated {timeAgo(deals[0]?.publishedAt ?? new Date().toISOString())}
+          <PulseDot /> {latestUpdated ? updatedText(latestUpdated) : "Updated just now"}
         </div>
       </div>
 

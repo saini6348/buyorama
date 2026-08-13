@@ -11,9 +11,10 @@ interface ModalProps {
   title: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  wide?: boolean;
 }
 
-export function Modal({ open, onClose, title, children, footer }: ModalProps) {
+export function Modal({ open, onClose, title, children, footer, wide = false }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 8 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className={styles.modalPanel}
+            className={`${styles.modalPanel} ${wide ? styles.modalPanelWide : ""}`}
           >
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>{title}</h2>
@@ -60,3 +61,4 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
     </AnimatePresence>
   );
 }
+

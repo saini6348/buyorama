@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createFeed, updateFeed } from "@/lib/admin/brand-feeds-api";
 import type { BrandFeed } from "@/lib/types/admin";
 import { ImageUploadField } from "./ImageUploadField";
+import { RichTextEditor } from "./RichTextEditor";
 import styles from "../../brand-feeds.module.css";
 
 interface FeedFormProps {
@@ -89,14 +90,8 @@ export function FeedForm({ mode, brandId, initial, onSuccess, onCancel, showToas
         <label htmlFor="feed-description" className={styles.formLabel}>
           Description *
         </label>
-        <textarea
-          id="feed-description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Describe this feed post…"
-          required
-          className={styles.formTextarea}
-        />
+        <RichTextEditor value={description} onChange={setDescription} />
+        {!description.trim() && <span className={styles.fieldNote}>Add some text to describe this feed.</span>}
       </div>
 
       <ImageUploadField
@@ -117,3 +112,4 @@ export function FeedForm({ mode, brandId, initial, onSuccess, onCancel, showToas
     </form>
   );
 }
+

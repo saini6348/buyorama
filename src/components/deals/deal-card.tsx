@@ -8,6 +8,11 @@ import type { Deal, BrandOfferDeal, CollectionDeal, QuickDeal } from "@/lib/type
 
 type Layout = "grid" | "feed";
 
+/** Returns true when there is a usable external/affiliate link to open. */
+function hasDealLink(url?: string): boolean {
+  return !!url && url.trim() !== "" && url.trim() !== "#";
+}
+
 interface DealCardProps {
   deal: Deal;
   layout?: Layout;
@@ -72,9 +77,11 @@ function BrandOfferCard({
             <PriceRow price={deal.price} originalPrice={deal.originalPrice} />
           </div>
         </div>
-        <Button href={deal.affiliateUrl} size="sm" className="flex-none">
-          Get Deal
-        </Button>
+        {hasDealLink(deal.affiliateUrl) ? (
+          <Button href={deal.affiliateUrl} size="sm" className="flex-none">
+            Get Deal
+          </Button>
+        ) : null}
       </div>
     );
   }
