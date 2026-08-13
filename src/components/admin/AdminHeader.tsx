@@ -3,7 +3,14 @@
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import styles from "@/app/admin-backoffice/admin.module.css";
-import { CreditCardIcon, LogoutIcon, StoreIcon, TagIcon } from "@/components/ui/icons";
+import {
+  CreditCardIcon,
+  FilterIcon,
+  LogoutIcon,
+  StoreIcon,
+  TagIcon,
+  TicketIcon,
+} from "@/components/ui/icons";
 import type { AdminUser } from "@/lib/types/admin";
 
 interface AdminHeaderProps {
@@ -11,24 +18,58 @@ interface AdminHeaderProps {
   onLogout: () => void;
 }
 
-const NAV_ITEMS = [
+interface SidebarItem {
+  href: string;
+  label: string;
+  icon: React.ComponentType<{ width?: number; height?: number; className?: string }>;
+  isActive: (path: string) => boolean;
+}
+
+interface SidebarGroup {
+  title?: string;
+  items: SidebarItem[];
+}
+
+const NAV_GROUPS: SidebarGroup[] = [
   {
-    href: "/admin-backoffice/brands",
-    label: "Brands",
-    icon: StoreIcon,
-    isActive: (path: string) => path.startsWith("/admin-backoffice/brand"),
+    items: [
+      {
+        href: "/admin-backoffice/brands",
+        label: "Brands",
+        icon: StoreIcon,
+        isActive: (path: string) => path.startsWith("/admin-backoffice/brand"),
+      },
+      {
+        href: "/admin-backoffice/coupons",
+        label: "Coupons",
+        icon: TicketIcon,
+        isActive: (path: string) => path.startsWith("/admin-backoffice/coupons"),
+      },
+      {
+        href: "/admin-backoffice/cards",
+        label: "Cards",
+        icon: CreditCardIcon,
+        isActive: (path: string) =>
+          path === "/admin-backoffice/cards" || path.startsWith("/admin-backoffice/cards/"),
+      },
+      {
+        href: "/admin-backoffice/content",
+        label: "Content",
+        icon: TagIcon,
+        isActive: (path: string) => path.startsWith("/admin-backoffice/content"),
+      },
+    ],
   },
   {
-    href: "/admin-backoffice/content",
-    label: "Content",
-    icon: TagIcon,
-    isActive: (path: string) => path.startsWith("/admin-backoffice/content"),
-  },
-  {
-    href: "/admin-backoffice/cardsSettings",
-    label: "Cards Settings",
-    icon: CreditCardIcon,
-    isActive: (path: string) => path.startsWith("/admin-backoffice/cardsSettings"),
+    title: "Configuration",
+    items: [
+      {
+        href: "/admin-backoffice/cardsSettings",
+        label: "Cards Settings",
+        icon: FilterIcon,
+        isActive: (path: string) => path.startsWith("/admin-backoffice/cardsSettings"),
+      },
+    ],
   },
 ];
 
@@ -38,8 +79,9 @@ export function AdminHeader({ user, onLogout }: AdminHeaderProps) {
   const initial = (user?.name || "Admin").trim().charAt(0).toUpperCase();
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.navContent}>
+    <>
+      {/* Top bar */}
+      <header className={styles.topBar}>
         <button
           type="button"
           className={styles.navLogo}
@@ -52,35 +94,6 @@ export function AdminHeader({ user, onLogout }: AdminHeaderProps) {
           </span>
         </button>
 
-        <div className={styles.navMenu} role="tablist">
-          {NAV_ITEMS.map((item) => {
-            const active = item.isActive(pathname);
-            const Icon = item.icon;
-            return (
-              <button
-                key={item.href}
-                type="button"
-                role="tab"
-                aria-selected={active}
-                onClick={() => router.push(item.href)}
-                className={`${styles.navMenuItem} ${active ? styles.navMenuItemActive : ""}`}
-              >
-                {active ? (
-                  <motion.span
-                    layoutId="admin-nav-pill"
-                    className={styles.navPill}
-                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  />
-                ) : null}
-                <span className={styles.navMenuLabel}>
-                  <Icon width={16} height={16} />
-                  {item.label}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
         <div className={styles.userSection}>
           <span className={styles.userAvatar}>{initial}</span>
           <span className={styles.userInfo}>{user?.name || "Admin"}</span>
@@ -89,7 +102,48 @@ export function AdminHeader({ user, onLogout }: AdminHeaderProps) {
             <span>Logout</span>
           </button>
         </div>
-      </div>
-    </nav>
+      </header>
+
+      {/* Left sidebar */}
+      <aside className={styles.sidebar}>
+        <nav className={styles.sidebarNav} aria-label="Admin navigation">
+          {NAV_GROUPS.map((group, gi) => {
+            const groupHasActive = group.items.some((item) => item.isActive(pathname));
+            return (
+              <div key={gi} className={styles.sidebarGroup}>
+                {group.title ? (
+                  <span className={styles.sidebarGroupTitle}>{group.title}</span>
+                ) : null}
+                {group.items.map((item) => {
+                  const active = item.isActive(pathname);
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={item.href}
+                      type="button"
+                      onClick={() => router.push(item.href)}
+                      className={`${styles.sidebarItem} ${active ? styles.sidebarItemActive : ""}`}
+                      aria-current={active ? "page" : undefined}
+                    >
+                      {active ? (
+                        <motion.span
+                          layoutId="admin-sidebar-pill"
+                          className={styles.sidebarPill}
+                          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        />
+                      ) : null}
+                      <span className={styles.sidebarItemIcon}>
+                        <Icon width={17} height={17} />
+                      </span>
+                      <span className={styles.sidebarItemLabel}>{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
   );
 }

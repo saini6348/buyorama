@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "../admin.module.css";
+import brandsStyles from "./brands.module.css";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { Modal } from "@/components/admin/Modal";
 import { Toast, type ToastState } from "@/components/admin/Toast";
@@ -76,7 +77,7 @@ export default function BrandsPage() {
   );
 }
 
-const EMPTY_FORM = { brandName: "", slug: "", logo: "" };
+const EMPTY_FORM = { brandName: "", slug: "", logo: "", siteUrl: "" };
 
 function BrandsSection() {
   const router = useRouter();
@@ -127,7 +128,12 @@ function BrandsSection() {
 
   const handleEditClick = (brand: Brand) => {
     setEditingBrand(brand);
-    setFormData({ brandName: brand.brandName, slug: brand.slug, logo: brand.logo || "" });
+    setFormData({
+      brandName: brand.brandName,
+      slug: brand.slug,
+      logo: brand.logo || "",
+      siteUrl: brand.siteUrl || "",
+    });
     setSlugTouched(true);
     setShowModal(true);
   };
@@ -182,12 +188,25 @@ function BrandsSection() {
 
   return (
     <div className={styles.section}>
-      <div className={styles.pageHeader}>
-        <div className={styles.pageHeaderText}>
-          <h1 className={styles.pageTitle}>Brands</h1>
-          <p className={styles.pageSubtitle}>
+      {/* Hero panel */}
+      <div className={brandsStyles.heroPanel}>
+        <div className={brandsStyles.heroIcon}>
+          <StoreIcon width={30} height={30} />
+        </div>
+        <div>
+          <h1 className={brandsStyles.heroTitle}>Brands</h1>
+          <p className={brandsStyles.heroSubtitle}>
             {loading ? "Loading brands…" : `${brands.length} brand${brands.length === 1 ? "" : "s"} total`}
           </p>
+        </div>
+      </div>
+
+      <div className={styles.pageHeader}>
+        <div className={styles.pageHeaderText}>
+          <h2 className={styles.pageTitle}>
+            {loading ? "Loading brands…" : `${filteredBrands.length} of ${brands.length}`}
+          </h2>
+          <p className={styles.pageSubtitle}>Manage all brands across the site.</p>
         </div>
         <div className={styles.pageHeaderActions}>
           <div className={styles.searchBox}>
@@ -211,38 +230,45 @@ function BrandsSection() {
       </div>
 
       {loading ? (
-        <div className={styles.brandGrid}>
+        <div className={brandsStyles.brandGrid}>
           {Array.from({ length: 8 }).map((_, i) => (
-            <Skeleton key={i} className={styles.skeletonCard} />
+            <Skeleton key={i} className={brandsStyles.brandSkeleton} />
           ))}
         </div>
       ) : filteredBrands.length === 0 ? (
-        <div className={styles.emptyState}>
-          <span className={styles.emptyIcon}>
+        <div className={brandsStyles.emptyState}>
+          <span className={brandsStyles.emptyIcon}>
             <StoreIcon width={22} height={22} />
           </span>
-          <p className={styles.emptyTitle}>
+          <p className={brandsStyles.emptyTitle}>
             {brands.length === 0 ? "No brands yet" : "No matching brands"}
           </p>
-          <p className={styles.emptyText}>
+          <p className={brandsStyles.emptyText}>
             {brands.length === 0
               ? "Create your first brand to get started."
               : "Try a different search term."}
           </p>
         </div>
       ) : (
-        <div className={styles.brandGrid}>
+        <div className={brandsStyles.brandGrid}>
+          <button type="button" onClick={handleAddClick} className={brandsStyles.addBrandCard}>
+            <span className={brandsStyles.addBrandIcon}>
+              <PlusIcon width={24} height={24} />
+            </span>
+            <span className={brandsStyles.addBrandLabel}>Add New Brand</span>
+          </button>
+
           <AnimatePresence mode="popLayout">
             {filteredBrands.map((brand) => (
               <motion.div
                 key={brand.id}
                 layout
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96 }}
-                whileHover={{ y: -3 }}
-                transition={{ duration: 0.18 }}
-                className={styles.brandCard}
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.2 }}
+                className={brandsStyles.brandCard}
                 role="button"
                 tabIndex={0}
                 onClick={() => router.push(`/admin-backoffice/brand-feeds/${brand.slug}`)}
@@ -253,74 +279,83 @@ function BrandsSection() {
                   }
                 }}
               >
-                <div className={styles.brandCardActions}>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEditClick(brand);
-                    }}
-                    className={styles.iconBtn}
-                    aria-label="Edit brand"
-                    title="Edit brand"
-                  >
-                    <PencilIcon width={14} height={14} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleToggleStatus(brand);
-                    }}
-                    className={brand.status === 1 ? styles.iconBtnDanger : styles.iconBtnSuccess}
-                    aria-label={brand.status === 1 ? "Deactivate brand" : "Activate brand"}
-                    title={brand.status === 1 ? "Deactivate" : "Activate"}
-                  >
-                    {brand.status === 1 ? (
-                      <LockIcon width={14} height={14} />
-                    ) : (
-                      <UnlockIcon width={14} height={14} />
-                    )}
-                  </button>
-                </div>
-
-                <div className={styles.brandMedia}>
+                <div className={brandsStyles.brandMedia}>
                   {brand.logo ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={brand.logo}
                       alt={brand.brandName}
-                      className={styles.brandLogo}
+                      className={brandsStyles.brandLogo}
                       onError={(e) => {
                         (e.target as HTMLImageElement).style.display = "none";
                       }}
                     />
                   ) : (
                     <div
-                      className={styles.brandInitial}
+                      className={brandsStyles.brandInitial}
                       style={{ backgroundColor: colorForId(brand.id) }}
                     >
                       {brand.brandName.charAt(0).toUpperCase()}
                     </div>
                   )}
                   <span
-                    className={`${styles.statusDot} ${
-                      brand.status === 1 ? styles.statusDotActive : styles.statusDotInactive
+                    className={`${brandsStyles.statusDot} ${
+                      brand.status === 1
+                        ? brandsStyles.statusDotActive
+                        : brandsStyles.statusDotInactive
                     }`}
                   />
+                  <div className={brandsStyles.brandCardActions}>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditClick(brand);
+                      }}
+                      className={brandsStyles.iconBtn}
+                      aria-label="Edit brand"
+                      title="Edit brand"
+                    >
+                      <PencilIcon width={14} height={14} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleToggleStatus(brand);
+                      }}
+                      className={
+                        brand.status === 1
+                          ? brandsStyles.iconBtnDanger
+                          : brandsStyles.iconBtnSuccess
+                      }
+                      aria-label={brand.status === 1 ? "Deactivate brand" : "Activate brand"}
+                      title={brand.status === 1 ? "Deactivate" : "Activate"}
+                    >
+                      {brand.status === 1 ? (
+                        <LockIcon width={14} height={14} />
+                      ) : (
+                        <UnlockIcon width={14} height={14} />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
-                <h3 className={styles.brandName}>{brand.brandName}</h3>
-                <span className={styles.brandSlug}>/{brand.slug}</span>
+                <div className={brandsStyles.brandBody}>
+                  <h3 className={brandsStyles.brandName}>{brand.brandName}</h3>
+                  <span className={brandsStyles.brandSlug}>/{brand.slug}</span>
 
-                <div className={styles.cardFooter}>
-                  <span
-                    className={`${styles.statusBadge} ${
-                      brand.status === 1 ? styles.statusActive : styles.statusInactive
-                    }`}
-                  >
-                    {brand.status === 1 ? "Active" : "Inactive"}
-                  </span>
+                  <div className={brandsStyles.cardFooter}>
+                    <span
+                      className={`${brandsStyles.statusBadge} ${
+                        brand.status === 1
+                          ? brandsStyles.statusActive
+                          : brandsStyles.statusInactive
+                      }`}
+                    >
+                      {brand.status === 1 ? "Active" : "Inactive"}
+                    </span>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -417,6 +452,20 @@ function BrandsSection() {
                 />
               </div>
             ) : null}
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="siteUrl" className={styles.formLabel}>
+              Brand Site URL
+            </label>
+            <input
+              id="siteUrl"
+              type="text"
+              placeholder="e.g., amazon.in"
+              value={formData.siteUrl}
+              onChange={(e) => setFormData((prev) => ({ ...prev, siteUrl: e.target.value }))}
+              className={styles.formInput}
+            />
           </div>
         </form>
       </Modal>

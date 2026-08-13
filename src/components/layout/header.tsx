@@ -103,8 +103,13 @@ function NavDropdown({ label, children }: { label: string; children: ReactNode }
         {label}
         <ChevronDownIcon width={14} height={14} />
       </button>
-      <div className="invisible absolute left-0 top-full z-20 mt-2 flex max-h-96 w-64 flex-col gap-0.5 overflow-y-auto rounded-md border border-border-subtle bg-bg-surface-raised p-2 opacity-0 shadow-brand-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
-        {children}
+      <div className="invisible absolute left-0 top-full z-20 w-64 pb-2 opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
+        {/* Invisible bridge that spans the gap, so moving from the parent into the
+            submenu never breaks the :hover and the dropdown doesn't close. */}
+        <div className="-mt-2 h-2" />
+        <div className="flex max-h-96 flex-col gap-0.5 overflow-y-auto rounded-md border border-border-subtle bg-bg-surface-raised p-2 shadow-brand-lg">
+          {children}
+        </div>
       </div>
     </div>
   );

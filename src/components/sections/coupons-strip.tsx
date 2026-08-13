@@ -17,7 +17,7 @@ export function CouponsStrip({ coupons }: { coupons: Coupon[] }) {
         </RevealOnScroll>
         <div className="grid gap-4 sm:grid-cols-2">
           {coupons.map((c) => (
-            <CouponCard key={c.id} coupon={c} />
+            <CouponCard key={c.id} coupon={c} showCode={false} />
           ))}
         </div>
       </div>

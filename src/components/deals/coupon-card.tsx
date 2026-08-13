@@ -4,7 +4,7 @@ import { CopyCodeButton } from "@/components/deals/copy-code-button";
 import { timeAgo, getTimeRemaining } from "@/lib/utils";
 import type { Coupon } from "@/lib/types/coupon";
 
-export function CouponCard({ coupon }: { coupon: Coupon }) {
+export function CouponCard({ coupon, showCode = true }: { coupon: Coupon; showCode?: boolean }) {
   const remaining = coupon.expiresAt ? getTimeRemaining(coupon.expiresAt) : null;
   const expiringSoon = remaining && !remaining.expired && remaining.hours < 24;
 
@@ -29,7 +29,9 @@ export function CouponCard({ coupon }: { coupon: Coupon }) {
       <div className="flex min-w-0 flex-1 flex-col gap-2.5 p-4">
         <div className="flex items-start justify-between gap-2.5">
           <div>
-            <h4 className="text-[15px] font-bold leading-snug text-text-primary">{coupon.headline}</h4>
+            <h4 className={`font-bold leading-snug text-text-primary ${showCode ? "text-[15px]" : "text-[20px]"}`}>
+              {coupon.headline}
+            </h4>
             <div className="mt-0.5 text-xs text-text-muted">{coupon.description}</div>
           </div>
           {coupon.verified ? (
@@ -46,12 +48,14 @@ export function CouponCard({ coupon }: { coupon: Coupon }) {
             </Badge>
           )}
         </div>
-        <div className="flex flex-wrap items-center gap-2.5">
-          <span className="rounded-sm border border-dashed border-border-strong bg-bg-sunken px-3 py-1.5 font-mono-brand text-sm font-bold tracking-wide text-text-primary">
-            {coupon.code}
-          </span>
-          <CopyCodeButton code={coupon.code} />
-        </div>
+        {showCode ? (
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="rounded-sm border border-dashed border-border-strong bg-bg-sunken px-3 py-1.5 font-mono-brand text-sm font-bold tracking-wide text-text-primary">
+              {coupon.code}
+            </span>
+            <CopyCodeButton code={coupon.code} />
+          </div>
+        ) : null}
         <Button href={coupon.affiliateUrl} variant="secondary" size="sm" className="w-fit">
           Shop Now →
         </Button>

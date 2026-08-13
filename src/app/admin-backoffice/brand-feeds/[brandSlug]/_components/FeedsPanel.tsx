@@ -80,6 +80,7 @@ export function FeedsPanel({ brandId, feeds, loading, onFeedsChange, showToast }
           setEditingFeed(null);
         }}
         title={editingFeed ? "Edit Feed" : "Add New Feed"}
+        wide
       >
         <FeedForm
           mode={editingFeed ? "edit" : "create"}
@@ -105,3 +106,4 @@ export function FeedsPanel({ brandId, feeds, loading, onFeedsChange, showToast }
     </div>
   );
 }
+

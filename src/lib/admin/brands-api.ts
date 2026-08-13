@@ -10,6 +10,7 @@ export async function createBrand(payload: {
   brandName: string;
   slug: string;
   logo?: string;
+  siteUrl?: string;
 }): Promise<Brand> {
   const data = await postJson<{ data: Brand }>("/api/brands/create", payload);
   return data.data;
@@ -20,6 +21,7 @@ export async function updateBrand(payload: {
   brandName: string;
   slug: string;
   logo?: string;
+  siteUrl?: string;
 }): Promise<Brand> {
   const data = await postJson<{ data: Brand }>("/api/brands/update", payload);
   return data.data;
