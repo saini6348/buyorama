@@ -9,6 +9,7 @@ export interface Brand {
   brandName: string;
   slug: string;
   logo?: string;
+  siteUrl?: string;
   status: 0 | 1;
 }
 

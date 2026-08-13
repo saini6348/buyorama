@@ -41,7 +41,7 @@ export default async function CouponCodesPage({ searchParams }: PageProps<"/coup
 
       <div className="mt-7 grid gap-4 sm:grid-cols-2">
         {filtered.map((c) => (
-          <CouponCard key={c.id} coupon={c} />
+          <CouponCard key={c.id} coupon={c} showCode={false} />
         ))}
       </div>
       {filtered.length === 0 ? <p className="py-10 text-center text-sm text-text-muted">No coupons for this store right now.</p> : null}
