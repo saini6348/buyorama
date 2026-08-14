@@ -55,7 +55,9 @@ function hashString(str: string): number {
   return Math.abs(hash);
 }
 
-export function mapStore(publicStore: PublicStore): Store {
+export function mapStore(publicStore: PublicStore | undefined | null): Store | undefined {
+  if (!publicStore || !publicStore.name) return undefined;
+
   const palette =
     publicStore.logoBg && publicStore.logoFg
       ? { logoBg: publicStore.logoBg, logoFg: publicStore.logoFg }
@@ -76,8 +78,7 @@ export function mapStore(publicStore: PublicStore): Store {
 export async function getAllStores(): Promise<Store[]> {
   const res = await publicApiGet<{ data: PublicStore[] }>("/api/public/stores");
   const stores = res.data ?? [];
-  // Map and prioritise stores that actually have data first, otherwise keep order.
-  return stores.map(mapStore);
+  return stores.map(mapStore).filter((s): s is Store => Boolean(s));
 }
 
 export async function getStore(slug: string): Promise<Store | undefined> {
@@ -89,11 +90,11 @@ export async function getStoreStats(slug: string) {
   const res = await publicApiGet<{ data: PublicStoreStats }>(
     `/api/public/stores/${encodeURIComponent(slug)}/stats`,
   );
-  const stats = res.data;
+  const stats = res?.data;
   return {
-    totalPosts: stats.totalDeals,
-    totalCoupons: stats.totalCoupons,
-    hasLiveFeed: stats.hasLiveFeed,
+    totalPosts: stats?.totalDeals ?? 0,
+    totalCoupons: stats?.totalCoupons ?? 0,
+    hasLiveFeed: stats?.hasLiveFeed ?? false,
   };
 }
 
@@ -102,6 +103,11 @@ export async function getOtherStores(excludeSlug: string, limit = 6) {
   const stores = res.data ?? [];
   return stores
     .filter((s) => s.slug !== excludeSlug)
-    .map((s) => ({ ...mapStore(s), liveDealsCount: 0 }))
+    .map((s) => {
+      const mapped = mapStore(s);
+      return mapped ? { ...mapped, liveDealsCount: 0 } : null;
+    })
+    .filter((s): s is Store & { liveDealsCount: number } => s !== null)
     .slice(0, limit);
 }
+
