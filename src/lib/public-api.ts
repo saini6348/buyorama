@@ -41,3 +41,30 @@ export async function publicApiGet<T>(path: string): Promise<T> {
   }
 }
 
+/**
+ * POST helper for public endpoints (e.g. POST /api/public/cards-feed/list).
+ * Like publicApiGet it never throws — on failure it returns an empty
+ * list-shaped payload so the UI degrades gracefully.
+ */
+export async function publicApiPost<T>(path: string, body: unknown): Promise<T> {
+  try {
+    const response = await fetch(`${PUBLIC_API_BASE_URL}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      // eslint-disable-next-line no-console
+      console.warn(`[public-api] ${response.status} for POST ${path} — returning empty data.`);
+      return { data: [] } as T;
+    }
+
+    return (await response.json()) as T;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn(`[public-api] POST request failed for ${path}:`, error);
+    return { data: [] } as T;
+  }
+}
+
