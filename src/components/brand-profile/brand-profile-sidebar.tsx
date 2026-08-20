@@ -5,7 +5,7 @@ import { BrandProfileStat } from "@/components/brand-profile/brand-profile-stat"
 import { SidebarNavLink } from "@/components/brand-profile/sidebar-nav-link";
 
 interface BrandProfileSidebarProps {
-  logo: ReactNode;
+  logo?: ReactNode;
   title: string;
   subtitle: string;
   slugPillLabel?: string;
@@ -19,7 +19,7 @@ export function BrandProfileSidebar({ logo, title, subtitle, slugPillLabel, appl
   return (
     <aside className="flex flex-col gap-5 border-b border-border-subtle p-5 lg:border-b-0 lg:border-r">
       <div className="text-center">
-        <div className="mb-3 flex justify-center">{logo}</div>
+        {logo ? <div className="mb-3 flex justify-center">{logo}</div> : null}
         <h3 className="font-display text-lg text-text-primary">{title}</h3>
         <div className="mt-0.5 text-xs font-semibold text-text-muted">{subtitle}</div>
         {slugPillLabel ? (
@@ -50,3 +50,4 @@ export function BrandProfileSidebar({ logo, title, subtitle, slugPillLabel, appl
     </aside>
   );
 }
+
