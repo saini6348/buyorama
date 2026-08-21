@@ -26,6 +26,7 @@ import {
   TrashIcon,
 } from "@/components/ui/icons";
 import type { AdminUser } from "@/lib/types/admin";
+import { resolveImageUrl } from "@/lib/admin/uploads-api";
 
 export default function CouponsPage() {
   const router = useRouter();
@@ -290,7 +291,7 @@ function CouponsSection() {
                 <div className={styles.couponMedia}>
                   {coupon.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={coupon.image} alt={coupon.title} className={styles.couponImage} />
+                    <img src={resolveImageUrl(coupon.image)} alt={coupon.title} className={styles.couponImage} />
                   ) : (
                     <div className={styles.couponMediaFallback}>
                       <TicketIcon width={28} height={28} />

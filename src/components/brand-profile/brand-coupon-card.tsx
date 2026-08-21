@@ -1,6 +1,8 @@
 import { StoreLogo } from "@/components/ui/store-logo";
 import { Button } from "@/components/ui/button";
 import { timeAgo } from "@/lib/utils";
+import { resolveImageUrlWithBase } from "@/lib/image-url";
+import { PUBLIC_API_BASE_URL } from "@/lib/public-api";
 import type { BrandCoupon } from "@/lib/content/get-coupons";
 
 interface CouponRowCardProps {
@@ -15,7 +17,7 @@ export function CouponRowCard({ coupon, storeName }: CouponRowCardProps) {
       <div className="flex h-12 w-12 flex-none items-center justify-center overflow-hidden rounded-sm bg-bg-sunken">
         {coupon.image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={coupon.image} alt={coupon.title} className="h-full w-full object-cover" />
+          <img src={resolveImageUrlWithBase(coupon.image, PUBLIC_API_BASE_URL)} alt={coupon.title} className="h-full w-full object-cover" />
         ) : (
           <StoreLogo bg="#7c3aed" fg="#ffffff" monogram={storeName ? storeName.charAt(0).toUpperCase() : "C"} size={48} />
         )}
