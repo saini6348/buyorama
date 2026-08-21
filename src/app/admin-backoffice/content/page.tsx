@@ -19,6 +19,7 @@ import {
   updateContentStatus,
 } from "@/lib/admin/content-api";
 import { colorForId } from "@/lib/utils";
+import { resolveImageUrl } from "@/lib/admin/uploads-api";
 import {
   ChevronDownIcon,
   ImageIcon,
@@ -327,7 +328,7 @@ function ContentSection() {
                 <div className={styles.contentMedia}>
                   {item.image_path ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.image_path} alt={item.title} className={styles.contentImage} />
+                    <img src={resolveImageUrl(item.image_path)} alt={item.title} className={styles.contentImage} />
                   ) : (
                     <div className={styles.contentMediaFallback}>
                       <ImageIcon width={26} height={26} />

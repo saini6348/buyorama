@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { PencilIcon, TrashIcon, TicketIcon } from "@/components/ui/icons";
 import type { BrandCoupon } from "@/lib/types/admin";
+import { resolveImageUrl } from "@/lib/admin/uploads-api";
 import styles from "../../brand-feeds.module.css";
 
 interface CouponCardProps {
@@ -25,7 +26,7 @@ export function CouponCard({ coupon, onEdit, onDelete }: CouponCardProps) {
       <div className={styles.couponMedia}>
         {coupon.image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={coupon.image} alt={coupon.title} className={styles.couponImage} />
+          <img src={resolveImageUrl(coupon.image)} alt={coupon.title} className={styles.couponImage} />
         ) : (
           <div className={styles.couponMediaFallback}>
             <TicketIcon width={28} height={28} />

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PencilIcon, TrashIcon, SortIcon, ChevronDownIcon } from "@/components/ui/icons";
 import type { BrandFeed } from "@/lib/types/admin";
+import { resolveImageUrl } from "@/lib/admin/uploads-api";
 import styles from "../../brand-feeds.module.css";
 
 type SortKey = "title" | "createdAt";
@@ -100,7 +101,7 @@ export function FeedsTable({ feeds, loading, onEdit, onDelete }: FeedsTableProps
                 <td>
                   {feed.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={feed.image} alt={feed.title} className={styles.tableThumb} />
+                    <img src={resolveImageUrl(feed.image)} alt={feed.title} className={styles.tableThumb} />
                   ) : (
                     <div className={styles.tableThumbFallback} />
                   )}
@@ -142,7 +143,7 @@ export function FeedsTable({ feeds, loading, onEdit, onDelete }: FeedsTableProps
             <div className={styles.feedMobileHeader}>
               {feed.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={feed.image} alt={feed.title} className={styles.tableThumb} />
+                <img src={resolveImageUrl(feed.image)} alt={feed.title} className={styles.tableThumb} />
               ) : (
                 <div className={styles.tableThumbFallback} />
               )}

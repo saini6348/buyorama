@@ -8,7 +8,8 @@ import { ChipFilterGroup } from "@/components/brand-profile/chip-filter-group";
 import { FeedPost } from "@/components/brand-profile/feed-post";
 import { Badge } from "@/components/ui/badge";
 import { PulseDot } from "@/components/ui/pulse-dot";
-import { publicApiPost } from "@/lib/public-api";
+import { publicApiPost, PUBLIC_API_BASE_URL } from "@/lib/public-api";
+import { resolveImageUrlWithBase } from "@/lib/image-url";
 import { CREDIT_CARD_CATEGORIES, BANK_NAMES } from "@/lib/types/credit-card";
 
 // ---------- API response types ----------
@@ -202,7 +203,7 @@ function CardFeedPost({ card }: { card: PublicCardsFeedItem }) {
       {card.image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={card.image}
+          src={resolveImageUrlWithBase(card.image, PUBLIC_API_BASE_URL)}
           alt={card.title}
           className="mb-3 max-h-48 w-full rounded-lg object-cover"
         />

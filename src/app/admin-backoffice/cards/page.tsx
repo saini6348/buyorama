@@ -24,6 +24,7 @@ import {
   type CardsFeed,
 } from "@/lib/admin/cards-feed-api";
 import type { LookupItem } from "@/lib/types/admin";
+import { resolveImageUrl } from "@/lib/admin/uploads-api";
 import {
   CreditCardIcon,
   PencilIcon,
@@ -519,7 +520,7 @@ function CardsSection() {
                   <div className={styles.cardMedia}>
                     {card.image ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={card.image} alt={card.title} className={styles.cardImage} />
+                      <img src={resolveImageUrl(card.image)} alt={card.title} className={styles.cardImage} />
                     ) : (
                       <div className={styles.cardMediaFallback}>
                         <CreditCardIcon width={30} height={30} />
